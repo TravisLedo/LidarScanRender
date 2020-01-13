@@ -1,6 +1,6 @@
 # Lidar Scan & Render Bot
 
-This 
+This Repository cantains two programs that work together. The Arduino script will handle the robotics portion along with taking measurements. The Java program will render the points captured by the Arudino.
 
 
 ### Prerequisites
@@ -25,6 +25,16 @@ This
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 
-# Video
+## Screenshots
+
+![The Device](/screenshots/ss1.png?raw=true "")
+![The Software](/screenshots/ss4.png?raw=true "")
+![Running The Program](/screenshots/ss3.png?raw=true "")
+![Results](/screenshots/ss2.png?raw=true "")
+
+## Video Link
+
+* [YouTube](https://youtu.be/6YTCKRSWroE) - Video Demo
+
 
 
