@@ -34,7 +34,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Video Link
 
-* [Youtube](https://youtu.be/6YTCKRSWroE) - Video Demo
+* [YouTube](https://youtu.be/6YTCKRSWroE) - Video Demo
 
 
 
