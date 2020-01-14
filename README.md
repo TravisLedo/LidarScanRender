@@ -25,9 +25,6 @@ This Repository cantains two programs that work together. The Arduino script wil
 * **[Travis Ledo](https://travisledo.github.io)** - *Initial work* - [LidarScanRender](https://github.com/TravisLedo)
 
 
-## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
 
 ## Screenshots
 
