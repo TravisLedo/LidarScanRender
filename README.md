@@ -27,7 +27,7 @@ This Repository cantains two programs that work together. The Arduino script wil
 
 
 
-## schematic
+## Schematic
 
 ![Schematic](/screenshots/schematic.png?raw=true "")
 
