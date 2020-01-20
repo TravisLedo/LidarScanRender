@@ -54,11 +54,6 @@ I used a 5v wall brick to run the servos because I just hate dealing with batter
 * [Arduino](https://https://www.arduino.cc/) - Arduino IDE
 
 
-## Authors
-
-* **[Travis Ledo](https://travisledo.github.io)** - *Initial work* - [LidarScanRender](https://github.com/TravisLedo)
-
-
 ## Schematic
 
 ![Schematic](/screenshots/schematic.png?raw=true "")
@@ -71,4 +66,6 @@ I used a 5v wall brick to run the servos because I just hate dealing with batter
 ![Results](/screenshots/ss2.png?raw=true "")
 
 
+## Authors
 
+* **[Travis Ledo](https://travisledo.github.io)** - *Initial work* - [LidarScanRender](https://github.com/TravisLedo)
