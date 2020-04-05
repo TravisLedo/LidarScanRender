@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="LidarScanRender.jar" size="20648" download="eager" />
+    <jar href="LidarScanRender.jar" size="20649" download="eager" />
     <jar href="lib/jSerialComm-2.5.1.jar" size="372951" download="eager" />
   </resources>
   <jfx:javafx-desc  width="800" height="600" main-class="main.Main"  name="LidarScanRender" />
