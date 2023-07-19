@@ -44,13 +44,13 @@ I used a 5v wall brick to run the servos because I just hate dealing with batter
 * [Java](https://www.java.com) - Java Runtime Environment
 * [Arduino](https://www.arduino.cc/) - Arduino Mega Microcontroller
 * [TFMini(UART)](https://www.sparkfun.com/products/14588) - TFMini Lidar sensor
-* [jSerialComm-2.5.1](https://fazecast.github.io/jSerialComm/) - Arduino Serial Communication Library for Java
+
 * [MG996R Servo x 2](https://www.towerpro.com.tw/product/mg996r/) - 180 degrees standard servos
 
 
 ## Programmed In
 
-* [Netbeans](https://netbeans.org/) - Java IDE
+* [IntelliJ](https://www.jetbrains.com/idea/download) - Java IDE
 * [Arduino](https://https://www.arduino.cc/) - Arduino IDE
 
 
