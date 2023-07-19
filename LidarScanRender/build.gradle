@@ -1,0 +1,26 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.14'
+}
+
+javafx {
+    version = "14"
+    modules = [ 'javafx.controls','javafx.base', 'javafx.fxml', 'javafx.graphics', 'javafx.media', 'javafx.swing', 'javafx.web']
+}
+mainClassName = 'Main'
+group 'org.lidarscanrender'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'com.fazecast:jSerialComm:2.5.1'
+}
+
+test {
+    useJUnitPlatform()
+}
