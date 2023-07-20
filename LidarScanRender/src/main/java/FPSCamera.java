@@ -2,11 +2,7 @@ import javafx.animation.AnimationTimer;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.geometry.Point3D;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.PerspectiveCamera;
-import javafx.scene.Scene;
-import javafx.scene.SubScene;
+import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -17,6 +13,66 @@ import javafx.scene.transform.Translate;
 import javafx.util.Callback;
 
 public class FPSCamera extends Parent {
+
+    /*==========================================================================
+     Initialization
+     */
+    private final Group root = new Group();
+    private final Affine affine = new Affine();
+    private final Translate t = new Translate(0, 0, 0);
+    private final Rotate rotateX = new Rotate(0, Rotate.X_AXIS),
+            rotateY = new Rotate(0, Rotate.Y_AXIS),
+            rotateZ = new Rotate(0, Rotate.Z_AXIS);
+    /*==========================================================================
+     Properties
+     */
+    private final ReadOnlyObjectWrapper<PerspectiveCamera> camera = new ReadOnlyObjectWrapper<>(this, "camera", new PerspectiveCamera(true));
+    /*==========================================================================
+     Callbacks
+     | R | Up| F |  | P|
+     U |mxx|mxy|mxz|  |tx|
+     V |myx|myy|myz|  |ty|
+     N |mzx|mzy|mzz|  |tz|
+
+     */
+    //Forward / look direction
+    private final Callback<Transform, Point3D> F = (a) -> {
+        return new Point3D(a.getMzx(), a.getMzy(), a.getMzz());
+    };
+    private final Callback<Transform, Point3D> N = (a) -> {
+        return new Point3D(a.getMxz(), a.getMyz(), a.getMzz());
+    };
+    // up direction
+    private final Callback<Transform, Point3D> UP = (a) -> {
+        return new Point3D(a.getMyx(), a.getMyy(), a.getMyz());
+    };
+    private final Callback<Transform, Point3D> V = (a) -> {
+        return new Point3D(a.getMxy(), a.getMyy(), a.getMzy());
+    };
+    // right direction
+    private final Callback<Transform, Point3D> R = (a) -> {
+        return new Point3D(a.getMxx(), a.getMxy(), a.getMxz());
+    };
+    private final Callback<Transform, Point3D> U = (a) -> {
+        return new Point3D(a.getMxx(), a.getMyx(), a.getMzx());
+    };
+    //position
+    private final Callback<Transform, Point3D> P = (a) -> {
+        return new Point3D(a.getTx(), a.getTy(), a.getTz());
+    };
+    private boolean fwd, strafeL, strafeR, back, up, down, shift;
+    private double mouseSpeed = 1.0, mouseModifier = 0.1;
+    private final double moveSpeed = 1;
+    private double mousePosX;
+    private double mousePosY;
+    private double mouseOldX;
+    private double mouseOldY;
+    private double mouseDeltaX;
+    private double mouseDeltaY;
+
+    /*==========================================================================
+     Movement
+     */
 
     public FPSCamera() {
         initialize();
@@ -46,26 +102,6 @@ public class FPSCamera extends Parent {
             moveDown();
         }
     }
-    /*==========================================================================
-     Initialization
-     */
-    private final Group root = new Group();
-    private final Affine affine = new Affine();
-    private final Translate t = new Translate(0, 0, 0);
-    private final Rotate rotateX = new Rotate(0, Rotate.X_AXIS),
-            rotateY = new Rotate(0, Rotate.Y_AXIS),
-            rotateZ = new Rotate(0, Rotate.Z_AXIS);
-
-    private boolean fwd, strafeL, strafeR, back, up, down, shift;
-
-    private double mouseSpeed = 1.0, mouseModifier = 0.1;
-    private double moveSpeed = 1;
-    private double mousePosX;
-    private double mousePosY;
-    private double mouseOldX;
-    private double mouseOldY;
-    private double mouseDeltaX;
-    private double mouseDeltaY;
 
     private void initialize() {
         getChildren().add(root);
@@ -179,7 +215,7 @@ public class FPSCamera extends Parent {
 
                     rotateY.setAngle(
                             MathUtils.clamp(-360, ((rotateY.getAngle() + mouseDeltaX * (mouseSpeed * mouseModifier)) % 360 + 540) % 360 - 180, 360)
-                    ); // horizontal                
+                    ); // horizontal
                     rotateX.setAngle(
                             MathUtils.clamp(-45, ((rotateX.getAngle() - mouseDeltaY * (mouseSpeed * mouseModifier)) % 360 + 540) % 360 - 180, 35)
                     ); // vertical
@@ -312,7 +348,7 @@ public class FPSCamera extends Parent {
 
                     rotateY.setAngle(
                             MathUtils.clamp(-360, ((rotateY.getAngle() + mouseDeltaX * (mouseSpeed * mouseModifier)) % 360 + 540) % 360 - 180, 360)
-                    ); // horizontal                
+                    ); // horizontal
                     rotateX.setAngle(
                             MathUtils.clamp(-45, ((rotateX.getAngle() - mouseDeltaY * (mouseSpeed * mouseModifier)) % 360 + 540) % 360 - 180, 35)
                     ); // vertical
@@ -355,10 +391,6 @@ public class FPSCamera extends Parent {
         }.start();
     }
 
-    /*==========================================================================
-     Movement
-     */
-
     public void moveForward() {
         affine.setTx(getPosition().getX() + moveSpeed * getN().getX());
         affine.setTy(getPosition().getY() + moveSpeed * getN().getY());
@@ -395,11 +427,6 @@ public class FPSCamera extends Parent {
         affine.setTz(getPosition().getZ() + moveSpeed * getV().getZ());
     }
 
-    /*==========================================================================
-     Properties
-     */
-    private final ReadOnlyObjectWrapper<PerspectiveCamera> camera = new ReadOnlyObjectWrapper<>(this, "camera", new PerspectiveCamera(true));
-
     public final PerspectiveCamera getCamera() {
         return camera.get();
     }
@@ -407,40 +434,6 @@ public class FPSCamera extends Parent {
     public ReadOnlyObjectProperty cameraProperty() {
         return camera.getReadOnlyProperty();
     }
-
-    /*==========================================================================
-     Callbacks    
-     | R | Up| F |  | P|
-     U |mxx|mxy|mxz|  |tx|
-     V |myx|myy|myz|  |ty|
-     N |mzx|mzy|mzz|  |tz|
-    
-     */
-    //Forward / look direction    
-    private final Callback<Transform, Point3D> F = (a) -> {
-        return new Point3D(a.getMzx(), a.getMzy(), a.getMzz());
-    };
-    private final Callback<Transform, Point3D> N = (a) -> {
-        return new Point3D(a.getMxz(), a.getMyz(), a.getMzz());
-    };
-    // up direction
-    private final Callback<Transform, Point3D> UP = (a) -> {
-        return new Point3D(a.getMyx(), a.getMyy(), a.getMyz());
-    };
-    private final Callback<Transform, Point3D> V = (a) -> {
-        return new Point3D(a.getMxy(), a.getMyy(), a.getMzy());
-    };
-    // right direction
-    private final Callback<Transform, Point3D> R = (a) -> {
-        return new Point3D(a.getMxx(), a.getMxy(), a.getMxz());
-    };
-    private final Callback<Transform, Point3D> U = (a) -> {
-        return new Point3D(a.getMxx(), a.getMyx(), a.getMzx());
-    };
-    //position
-    private final Callback<Transform, Point3D> P = (a) -> {
-        return new Point3D(a.getTx(), a.getTy(), a.getTz());
-    };
 
     private Point3D getF() {
         return F.call(getLocalToSceneTransform());

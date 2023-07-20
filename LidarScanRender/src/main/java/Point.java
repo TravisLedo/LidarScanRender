@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 
 import javafx.scene.paint.Color;
@@ -7,29 +7,26 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 
 /**
- *
  * @author travis
  */
-public class Point extends Sphere{
+public class Point extends Sphere {
 
-   
+
     private double x;
     private double y;
     private double z;
-    
-    public Point(double x, double y, double z){
+
+    public Point(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
-        
+
         this.setMaterial(new PhongMaterial(Color.SILVER));
 
     }
-    
-    
-    
-    
-     /**
+
+
+    /**
      * @return the x
      */
     public double getX() {
@@ -70,9 +67,7 @@ public class Point extends Sphere{
     public void setZ(double z) {
         this.z = z;
     }
-    
-    
-    
-    
+
+
 }
 

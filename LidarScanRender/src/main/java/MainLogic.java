@@ -2,17 +2,13 @@
  * Renders 3D points from Arduino Data through Serial Port
  */
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.fazecast.jSerialComm.SerialPort;
+import com.fazecast.jSerialComm.SerialPortDataListener;
+import com.fazecast.jSerialComm.SerialPortEvent;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Point3D;
 import javafx.geometry.Rectangle2D;
@@ -22,6 +18,7 @@ import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -30,21 +27,27 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Cylinder;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
-import javafx.stage.Stage;
+import javafx.stage.FileChooser;
 import javafx.stage.Screen;
-import com.fazecast.jSerialComm.*;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ComboBox;
-import javafx.scene.shape.Cylinder;
-import javafx.stage.FileChooser;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 /**
- *
  * @author travis
  */
 public class MainLogic extends Application {
@@ -80,6 +83,11 @@ public class MainLogic extends Application {
 
     ArrayList<Point> allPoints = new ArrayList<>(); //arraylist of points
     ArrayList<Point> newPoints = new ArrayList<>(); //temp array to add new points
+
+    //Do not run this main, use the one in the App class to start the app
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -122,42 +130,30 @@ public class MainLogic extends Application {
         xAxisCheck.setTextFill(Color.RED);
         xAxisCheck.setSelected(true);
         xAxisCheck.setOnAction(e -> {
-            if (xAxisCheck.isSelected()) {
-                toggleAxis(true, "x");
-            } else {
-                toggleAxis(false, "x");
-            }
+            toggleAxis(xAxisCheck.isSelected(), "x");
         });
 
         CheckBox yAxisCheck = new CheckBox("Y-Axis"); //checkbox for toggling axis line
         yAxisCheck.setTextFill(Color.GREEN);
         yAxisCheck.setSelected(true);
         yAxisCheck.setOnAction(e -> {
-            if (yAxisCheck.isSelected()) {
-                toggleAxis(true, "y");
-            } else {
-                toggleAxis(false, "y");
-            }
+            toggleAxis(yAxisCheck.isSelected(), "y");
         });
 
         CheckBox zAxisCheck = new CheckBox("Z-Axis"); //checkbox for toggling axis line
         zAxisCheck.setTextFill(Color.BLUE);
         zAxisCheck.setSelected(true);
         zAxisCheck.setOnAction(e -> {
-            if (zAxisCheck.isSelected()) {
-                toggleAxis(true, "z");
-            } else {
-                toggleAxis(false, "z");
-            }
+            toggleAxis(zAxisCheck.isSelected(), "z");
         });
 
         serialItems = FXCollections.observableArrayList(); //items for dropdown of serial ports
         serialComboBox = new ComboBox(serialItems); //drop down menu for serial ports
         serialComboBox.setPromptText("Select Serial Port");
-        
+
         Button scanButton = new Button("Scan");
         scanButton.setOnAction((ActionEvent e) -> { //bScan real time points
-        Scan(serialComboBox.getSelectionModel().getSelectedIndex());
+            Scan(serialComboBox.getSelectionModel().getSelectedIndex());
         });
 
         Button saveScanButton = new Button("Save");
@@ -209,10 +205,6 @@ public class MainLogic extends Application {
         toggleAxis(true, "z");
 
     } //end of start method
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     private void selectFile(ActionEvent event) {
 
@@ -410,7 +402,7 @@ public class MainLogic extends Application {
                     byte[] newData = new byte[selectedPort.bytesAvailable()];
                     int byteSize = selectedPort.readBytes(newData, newData.length);
                     String text = new String(newData);
-                    
+
                     if (text.contains(".*[a-z].*")) {
                         text = "";
                     }
@@ -437,7 +429,7 @@ public class MainLogic extends Application {
                             String signalString = "1";
                             byte[] signalByte = signalString.getBytes();
                             selectedPort.writeBytes(signalByte, signalByte.length);
-                            mergedText = new String();
+                            mergedText = "";
                         }
 
                     } else {
@@ -456,7 +448,7 @@ public class MainLogic extends Application {
                         String signalString = "0";
                         byte[] signalByte = signalString.getBytes();
                         selectedPort.writeBytes(signalByte, signalByte.length);
-                        mergedText = new String();
+                        mergedText = "";
                         //  mergedByteSize = 0;
                     }
                 }
