@@ -39,6 +39,13 @@ I used a USB cable as the serial connection but I am sure one could use a blueto
 I used a 5v wall brick to run the servos because I just hate dealing with batteries and avoid them when possible. The Lidar sensor was powered through the Arduino 5V. And of course the Arduino was powered with the same USB cable that was used as a serial port.
 
 
+### Materials
+* [Arduino Mega 2560](https://amzn.to/4c5rFt3)
+* [Lidar Sensor](https://amzn.to/3XwOXC2)
+* [Servo Motors](https://amzn.to/42jcc5k)
+* [Brackets](https://amzn.to/3FSMJGZ)
+
+
 ### Prerequisites
 
 * [Java](https://www.java.com) - Java Runtime Environment
